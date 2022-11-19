@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAlbumesSeg", "ApiAlbumesSeg\ApiAlbumesSeg.csproj", "{45194D62-1A5C-4CF2-9455-9AAC0E69E641}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45194D62-1A5C-4CF2-9455-9AAC0E69E641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45194D62-1A5C-4CF2-9455-9AAC0E69E641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45194D62-1A5C-4CF2-9455-9AAC0E69E641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45194D62-1A5C-4CF2-9455-9AAC0E69E641}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF90C48F-AB4B-40F2-9DB2-3982013CFBC6}
+	EndGlobalSection
+EndGlobal
