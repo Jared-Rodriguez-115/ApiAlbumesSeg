@@ -18,6 +18,6 @@ namespace ApiAlbumesSeg.Entidades
         [PrimeraLetraMayuscula]
         public string Artista { get; set; }
 
-        public List<Cancion> canciones { get; set; }
+        public List<AlbumCancion> AlbumCancion { get; set; }
     }
 }
