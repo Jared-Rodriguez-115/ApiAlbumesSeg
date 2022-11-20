@@ -1,23 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ApiAlbumesSeg.Validaciones;
 
-namespace ApiAlbumesSeg.Entidades
+namespace ApiAlbumesSeg.DTOs
 {
-    public class Album
+    public class AlbumDTO
     {
-
-        public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido obligatoriamente")]
         [StringLength(maximumLength: 20, ErrorMessage = "El campo {0} solo puede tener 20 caracteres")]
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }
 
+
         [Required(ErrorMessage = "El campo {0} es requerido obligatoriamente")]
         [StringLength(maximumLength: 20, ErrorMessage = "El campo {0} solo puede tener 20 caracteres")]
         [PrimeraLetraMayuscula]
         public string Artista { get; set; }
-
-        public List<Cancion> canciones { get; set; }
     }
 }
