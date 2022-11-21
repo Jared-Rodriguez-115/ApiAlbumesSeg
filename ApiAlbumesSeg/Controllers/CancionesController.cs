@@ -63,7 +63,6 @@ namespace ApiAlbumesSeg.Controllers
                 return BadRequest("El id de la cancion no coincide con el establecido en la url");
             }
 
-            dbContext.Update(cancion);
             await dbContext.SaveChangesAsync();
             return Ok();
         }
