@@ -41,11 +41,6 @@ namespace ApiAlbumesSeg.Controllers
                 .Include(selloDB => selloDB.Sellos)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            //if(cancion == null)
-            //{
-            //    return NotFound();
-            //}
-
             cancion.AlbumCancion = cancion.AlbumCancion.OrderBy(x => x.Orden).ToList();
 
             return mapper.Map<CancionDTOConAlbumes>(cancion);
@@ -75,7 +70,6 @@ namespace ApiAlbumesSeg.Controllers
 
             dbContext.Add(cancion);
             await dbContext.SaveChangesAsync();
-            return Ok();
 
             //var cancionDTO = mapper.Map<CancionDTO>(cancion);
 
