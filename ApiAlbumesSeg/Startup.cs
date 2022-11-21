@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ApiAlbumesSeg.Controllers;
 using ApiAlbumesSeg.Filtros;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +14,6 @@ namespace ApiAlbumesSeg
     {
         public Startup (IConfiguration configuration)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 

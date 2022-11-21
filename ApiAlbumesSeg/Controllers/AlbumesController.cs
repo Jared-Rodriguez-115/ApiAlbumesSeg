@@ -88,11 +88,6 @@ namespace ApiAlbumesSeg.Controllers
                 return NotFound();
             }
 
-            if (album.Id != id)
-            {
-                return BadRequest("El id del album no coincide con el establecido en la url.");
-            }
-
             dbContext.Update(album);
             await dbContext.SaveChangesAsync();
             return Ok();

@@ -101,7 +101,6 @@ namespace ApiAlbumesSeg.Controllers
 
             //OrdenarPorAlbumes(cancionDB);
 
-            dbContext.Update(cancion);
             await dbContext.SaveChangesAsync();
             return Ok();
         }
