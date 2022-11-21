@@ -17,6 +17,7 @@ namespace ApiAlbumesSeg.Utilidades
             CreateMap<Cancion, CancionDTO>();
             CreateMap<Cancion, CancionDTOConAlbumes>()
                 .ForMember(cancionDTO => cancionDTO.Albumes, opciones => opciones.MapFrom(MapCancionDTOAlbumes));
+            CreateMap<CancionPatchDTO, Cancion>().ReverseMap();
             CreateMap<SelloCreacionDTO, Sellos>();
             CreateMap<Sellos, SelloDTO>();
 

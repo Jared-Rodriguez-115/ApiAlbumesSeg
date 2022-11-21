@@ -69,5 +69,32 @@ namespace ApiAlbumesSeg.Controllers
 
             return CreatedAtRoute("obtenerSello", new {id = sello.Id, cancionId = cancionId}, selloDTO);
         }
+
+        [HttpPut("{id:int}")]
+
+        public async Task<ActionResult> Put(int cancionId, int id, SelloCreacionDTO selloCreacionDTO)
+        {
+            var existeCancion = await dbContext.Canciones.AnyAsync(cancionDB => cancionDB.Id == cancionId);
+
+            if (!existeCancion)
+            {
+                return NotFound();
+            }
+
+            var existeSello = await dbContext.Sellos.AnyAsync(selloDB => selloDB.Id == id);
+
+            if (!existeSello)
+            {
+                return NotFound();
+            }
+
+            var sello = mapper.Map<Sellos>(selloCreacionDTO);
+            sello.Id = id;
+            sello.CancionId = cancionId;
+
+            dbContext.Update(sello);
+            await dbContext.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

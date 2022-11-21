@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ApiAlbumesSeg.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ApiAlbumesSeg.Controllers
 {
@@ -41,6 +41,11 @@ namespace ApiAlbumesSeg.Controllers
                 .Include(selloDB => selloDB.Sellos)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if(cancion == null)
+            {
+                return NotFound();
+            }
+
             cancion.AlbumCancion = cancion.AlbumCancion.OrderBy(x => x.Orden).ToList();
 
             return mapper.Map<CancionDTOConAlbumes>(cancion);
@@ -76,34 +81,58 @@ namespace ApiAlbumesSeg.Controllers
             return CreatedAtRoute("obtenerCancion", new {id = cancion.Id}, cancionDTO);
         }
 
+        // [HttpPut("{id:int}")]
+
+        // public async Task<ActionResult> Put(Cancion cancion,int id)
+        // {
+
+        //    var exist = await dbContext.Canciones.AnyAsync(x => x.Id == id);
+
+        //var cancionDB = await dbContext.Canciones
+        //   .Include(x => x.AlbumCancion)
+        //  .FirstOrDefaultAsync(x => x.Id == id);
+
+        //  if(!exist)
+        //  {
+        //     return NotFound("La cancion especificada no existe");
+        //}
+
+        // if(cancion.Id != id)
+        // {
+        //   return BadRequest("El id de la cancion no coincide con el establecido en la url");
+        // }
+
+        //cancionDB = mapper.Map(cancionCreacionDTO, cancionDB);
+
+        //OrdenarPorAlbumes(cancionDB);
+
+        // dbContext.Update(cancion);
+        //await dbContext.SaveChangesAsync();
+        // return Ok();
+        //}
+
         [HttpPut("{id:int}")]
 
-        public async Task<ActionResult> Put(Cancion cancion,int id)
+        public async Task<ActionResult> Put(int id, CancionCreacionDTO cancionCreacionDTO)
         {
+            var cancionDB = await dbContext.Canciones
+                .Include(x => x.AlbumCancion)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            var exist = await dbContext.Canciones.AnyAsync(x => x.Id == id);
-            
-            //var cancionDB = await dbContext.Canciones
-             //   .Include(x => x.AlbumCancion)
-              //  .FirstOrDefaultAsync(x => x.Id == id);
-
-            if(!exist)
+            if(cancionDB == null)
             {
-                return NotFound("La cancion especificada no existe");
+                return NotFound();
             }
 
-            if(cancion.Id != id)
-            {
-                return BadRequest("El id de la cancion no coincide con el establecido en la url");
-            }
+            cancionDB = mapper.Map(cancionCreacionDTO, cancionDB);
 
-            //cancionDB = mapper.Map(cancionCreacionDTO, cancionDB);
-
-            //OrdenarPorAlbumes(cancionDB);
+            OrdenarPorAlbumes(cancionDB);
 
             await dbContext.SaveChangesAsync();
-            return Ok();
+
+            return NoContent();
         }
+
 
         [HttpDelete("{id:int}")]
 
@@ -131,6 +160,34 @@ namespace ApiAlbumesSeg.Controllers
                 }
             }
         }
+
+        [HttpPatch("{id:int}")]
+
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<CancionPatchDTO> patchDocument)
+        {
+            if (patchDocument == null) { return BadRequest(); }
+
+            var cancionDB = await dbContext.Canciones.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (cancionDB == null) { return NotFound(); }
+
+            var cancionDTO = mapper.Map<CancionPatchDTO>(cancionDB);
+
+            patchDocument.ApplyTo(cancionDTO);
+
+            var isValid = TryValidateModel(cancionDTO);
+
+            if (!isValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            mapper.Map(cancionDTO, cancionDB);
+
+            await dbContext.SaveChangesAsync();
+            return NoContent();
+        }
+
 
 
     }

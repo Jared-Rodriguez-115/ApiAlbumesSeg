@@ -79,7 +79,7 @@ namespace ApiAlbumesSeg.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Album album, int id)
+        public async Task<ActionResult> Put(AlbumDTO albumCreacionDTO, int id)
         {
             var exist = await dbContext.Albumes.AnyAsync(x => x.Id == id);
 
@@ -88,9 +88,12 @@ namespace ApiAlbumesSeg.Controllers
                 return NotFound();
             }
 
+            var album = mapper.Map<Album>(albumCreacionDTO);
+            album.Id = id;
+
             dbContext.Update(album);
             await dbContext.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]

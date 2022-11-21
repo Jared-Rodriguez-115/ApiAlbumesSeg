@@ -8,7 +8,7 @@
 
         public string Compositor { get; set; }
 
-        public DateTime? FechaPublicacion { get; set; }
+        public DateTime FechaPublicacion { get; set; }
 
         public List<SelloDTO> Sellos { get; set; }
     }
