@@ -36,6 +36,20 @@ namespace ApiAlbumesSeg.Controllers
             return mapper.Map<List<SelloDTO>>(sellos);
         }
 
+        [HttpGet("{id:int}", Name = "obtenerSello")]
+
+        public async Task<ActionResult<SelloDTO>> GetById(int id)
+        {
+            var sello = await dbContext.Sellos.FirstOrDefaultAsync(selloDB => selloDB.Id == id);
+
+            if(sello == null)
+            {
+                return NotFound();
+            }
+
+            return mapper.Map<SelloDTO>(sello);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post(int cancionId, SelloCreacionDTO selloCreacionDTO)
         {
@@ -50,7 +64,10 @@ namespace ApiAlbumesSeg.Controllers
             sello.CancionId = cancionId;
             dbContext.Add(sello);
             await dbContext.SaveChangesAsync();
-            return Ok();
+
+            var selloDTO = mapper.Map<SelloDTO>(sello);
+
+            return CreatedAtRoute("obtenerSello", new {id = sello.Id, cancionId = cancionId}, selloDTO);
         }
     }
 }

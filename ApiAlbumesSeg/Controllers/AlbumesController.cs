@@ -29,11 +29,11 @@ namespace ApiAlbumesSeg.Controllers
             return mapper.Map<List<GetAlbumDTO>>(albumes);
         }
 
-        [HttpGet("{id:int}")] //albumes/(id)
+        [HttpGet("{id:int}", Name = "obteneralbum")] //albumes/(id)
 
-        public async Task<ActionResult<GetAlbumDTO>> Get(int id)
+        public async Task<ActionResult<AlbumDTOConCanciones>> Get(int id)
         {
-            //var album = await dbContext.Albumes.FirstOrDefaultAsync(albumBD => albumBD.Id == id);
+            
             var album = await dbContext.Albumes
                 .Include(albumBD => albumBD.AlbumCancion)
                 .ThenInclude(albumCancionDB => albumCancionDB.Cancion)
@@ -44,7 +44,7 @@ namespace ApiAlbumesSeg.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<GetAlbumDTO>(album);
+            return mapper.Map<AlbumDTOConCanciones>(album);
         }
 
         [HttpGet("{nombre}")] //albumes/(nombre)
@@ -72,7 +72,10 @@ namespace ApiAlbumesSeg.Controllers
 
             dbContext.Add(album);
             await dbContext.SaveChangesAsync();
-            return Ok();
+            
+            var albumDTO = mapper.Map<GetAlbumDTO>(album);
+
+            return CreatedAtRoute("obteneralbum", new { id = album.Id }, albumDTO);
         }
 
         [HttpPut("{id:int}")]

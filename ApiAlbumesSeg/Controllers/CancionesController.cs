@@ -70,10 +70,10 @@ namespace ApiAlbumesSeg.Controllers
 
             dbContext.Add(cancion);
             await dbContext.SaveChangesAsync();
+           
+            var cancionDTO = mapper.Map<CancionDTO>(cancion);
 
-            //var cancionDTO = mapper.Map<CancionDTO>(cancion);
-
-            //return CreatedAtRoute("obtenerCancion", new {id = cancion.Id}, cancionDTO);
+            return CreatedAtRoute("obtenerCancion", new {id = cancion.Id}, cancionDTO);
         }
 
         [HttpPut("{id:int}")]
