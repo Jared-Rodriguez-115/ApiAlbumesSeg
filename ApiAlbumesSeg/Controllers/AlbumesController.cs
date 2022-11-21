@@ -33,7 +33,11 @@ namespace ApiAlbumesSeg.Controllers
 
         public async Task<ActionResult<GetAlbumDTO>> Get(int id)
         {
-            var album = await dbContext.Albumes.FirstOrDefaultAsync(albumBD => albumBD.Id == id);
+            //var album = await dbContext.Albumes.FirstOrDefaultAsync(albumBD => albumBD.Id == id);
+            var album = await dbContext.Albumes
+                .Include(albumBD => albumBD.AlbumCancion)
+                .ThenInclude(albumCancionDB => albumCancionDB.Cancion)
+                .FirstOrDefaultAsync(albumBD => albumBD.Id == id);
 
             if (album == null)
             {
