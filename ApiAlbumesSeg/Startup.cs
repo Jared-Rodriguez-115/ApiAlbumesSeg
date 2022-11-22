@@ -14,7 +14,7 @@ namespace ApiAlbumesSeg
     {
         public Startup (IConfiguration configuration)
         {
-            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
@@ -71,7 +71,7 @@ namespace ApiAlbumesSeg
                                 Id = "Bearer"
                             }
                         },
-                        new String[]{}
+                         new String[]{}
                     }
                 });
             });
