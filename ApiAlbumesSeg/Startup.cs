@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Globalization;
 
 namespace ApiAlbumesSeg
 {
@@ -72,7 +71,6 @@ namespace ApiAlbumesSeg
                                 Id = "Bearer"
                             }
                         },
-
                         new String[]{}
                     }
                 });
