@@ -3,26 +3,33 @@ using ApiAlbumesSeg.Entidades;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace ApiAlbumesSeg.Controllers
 {
 
     [ApiController]
     [Route("albumes")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class AlbumesController: ControllerBase
     {
 
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
 
 
-        public AlbumesController(ApplicationDbContext dbContext, IMapper mapper)
+        public AlbumesController(ApplicationDbContext dbContext, IMapper mapper, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
         [HttpGet] // /albumes
+        [AllowAnonymous]
         public async Task<ActionResult<List<GetAlbumDTO>>> Get()
         {
             var albumes = await dbContext.Albumes.ToListAsync();

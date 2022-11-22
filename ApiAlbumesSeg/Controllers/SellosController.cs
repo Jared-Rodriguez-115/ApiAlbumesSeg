@@ -3,22 +3,29 @@ using ApiAlbumesSeg.Entidades;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace ApiAlbumesSeg.Controllers
 {
 
     [ApiController]
     [Route("sellos/{selloId:int}/sellos")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SellosController: ControllerBase
     {
 
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public SellosController(ApplicationDbContext dbContext, IMapper mapper)
+        public SellosController(ApplicationDbContext dbContext, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -51,8 +58,17 @@ namespace ApiAlbumesSeg.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Post(int cancionId, SelloCreacionDTO selloCreacionDTO)
         {
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+
+            var usuarioId = usuario.Id;
+
             var existeCancion = await dbContext.Canciones.AnyAsync(cancionDB => cancionDB.Id == cancionId);
 
             if (!existeCancion)
@@ -62,6 +78,7 @@ namespace ApiAlbumesSeg.Controllers
 
             var sello = mapper.Map<Sellos>(selloCreacionDTO);
             sello.CancionId = cancionId;
+            sello.UsuarioId = usuarioId;
             dbContext.Add(sello);
             await dbContext.SaveChangesAsync();
 
